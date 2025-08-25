@@ -30,6 +30,14 @@ const port = process.env.PORT || 5000;
 
 
 
+const test = require("./Routes/StudentProfileRouter/StudentProfileRouter");
+const studentProfile = require("./Routes/StudentProfileRouter/StudentProfileRouter");
+
+
+app.use("/api/test/", test);
+
+app.use("/api/v1/", studentProfile);
+
 
 
 
