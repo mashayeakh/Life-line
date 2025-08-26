@@ -22,3 +22,4 @@ router.post("/students", upload.single("image"), createStudentProfile);
 router.get("/students", getAllStudents);
 
 module.exports = router;
+
