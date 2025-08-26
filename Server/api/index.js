@@ -71,7 +71,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Routes
-const studentProfile = require("./Routes/StudentProfileRouter/StudentProfileRouter");
+const studentProfile = require("../Routes/StudentProfileRouter/StudentProfileRouter");
 app.use("/api/v1", studentProfile);
 
 // Export (for Vercel serverless)
