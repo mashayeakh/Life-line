@@ -34,13 +34,13 @@ const test = require("./Routes/StudentProfileRouter/StudentProfileRouter");
 const studentProfile = require("./Routes/StudentProfileRouter/StudentProfileRouter");
 
 
-app.use("/api/test/", test);
+app.use("/", test);
 
 app.use("/api/v1/", studentProfile);
 
 
 
-    
+
 // Starting the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
