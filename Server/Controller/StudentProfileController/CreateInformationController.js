@@ -71,7 +71,8 @@ const getAllStudents = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Students retrieved successfully",
-            data: students
+            data: students,
+            count: students.length
         });
     } catch (error) {
         console.error("Error fetching students:", error);
