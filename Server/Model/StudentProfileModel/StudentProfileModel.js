@@ -168,7 +168,8 @@ const studentSchema = new mongoose.Schema({
     mode: {
         type: String,
         enum: ["Online", "Offline"],
-        required: [true, "Mode is required"]
+        required: [true, "Mode is required"],
+        set: v => v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()
     },
 
     // Offline-specific fields

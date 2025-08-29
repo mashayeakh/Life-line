@@ -61,7 +61,6 @@ const test = async (req, res) => {
 
 
 
-//* updated route
 //create student profile
 const createStudentProfile = async (req, res) => {
     try {
@@ -149,24 +148,44 @@ const createStudentProfile = async (req, res) => {
 const getAllStudents = async (req, res) => {
     try {
         const students = await StudentProfileModel.find();
-
-        if (!students || students.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: "No students found",
-                data: []
-            });
-        }
-
         res.status(200).json({
             success: true,
-            message: "Students retrieved successfully",
-            data: students,
-            count: students.length
+            message: "All students fetched successfully",
+            count: students.length,
+            data: students
         });
     } catch (error) {
         console.error("Error fetching students:", error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error"
+        });
+    }
+};
 
+//Get students filtered by mode (Online/Offline)
+const getStudentsByMode = async (req, res) => {
+    try {
+        const { mode } = req.query;
+
+        // Validate mode
+        if (!mode || !["Online", "Offline"].includes(mode.charAt(0).toUpperCase() + mode.slice(1).toLowerCase())) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or missing 'mode' query parameter. Must be 'Online' or 'Offline'."
+            });
+        }
+        const normalizedMode = mode.charAt(0).toUpperCase() + mode.slice(1).toLowerCase();
+
+        const students = await StudentProfileModel.find({ mode: normalizedMode });
+        res.status(200).json({
+            success: true,
+            message: `Students with mode = ${mode} fetched successfully`,
+            count: students.length,
+            data: students
+        });
+    } catch (error) {
+        console.error("Error fetching students by mode:", error);
         res.status(500).json({
             success: false,
             message: "Server Error"
@@ -176,4 +195,4 @@ const getAllStudents = async (req, res) => {
 
 
 
-module.exports = { test, createStudentProfile, getAllStudents }
+module.exports = { test, createStudentProfile, getAllStudents, getStudentsByMode }
