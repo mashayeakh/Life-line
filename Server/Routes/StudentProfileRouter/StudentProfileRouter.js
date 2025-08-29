@@ -2,6 +2,7 @@ const express = require("express");
 const { test, createStudentProfile, getAllStudents, getStudentsByMode } = require("../../Controller/StudentProfileController/CreateInformationController");
 const router = express.Router();
 const multer = require("multer");
+const { searchStudents } = require("../../Controller/StudentProfileController/FilteringInformationController");
 
 // Configure storage
 const storage = multer.diskStorage({
@@ -22,6 +23,9 @@ router.post("/students", upload.single("image"), createStudentProfile);
 router.get("/students", getAllStudents);
 // /students/mode ? mode = Online or / students / mode ? mode = Offline
 router.get("/students/mode", getStudentsByMode);
+
+//serarch 
+router.get("/students/search", searchStudents);
 
 
 module.exports = router;
