@@ -106,7 +106,7 @@ mongoose.connect(process.env.MONGO_URI, {
     .catch(err => console.error("❌ MongoDB connection error:", err));
 
 // Import your Student model
-const Student = require('../Model/StudenProfileModel/StudentProfileModel');
+const Student = require('../Model/StudentProfileModel/StudentProfileModel');
 
 // const Student = require("../Model/StudentProfileModel/StudentProfileModel");
 const studentProfile = require("../Routes/StudentProfileRouter/StudentProfileRouter");
