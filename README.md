@@ -1,118 +1,129 @@
+
 # Life-Line Student Management API
 
 A backend API built with **Express.js** and **MongoDB Atlas** for managing student profiles. The API supports creating, fetching, and storing student data, including file uploads.
 
 ---
-Features
 
-Create new student profiles with detailed information
+## Table of Contents
+- [Features](#features)
+- [Folder Structure](#folder-structure)
+- [Installation](#installation)
+- [API Endpoints](#api-endpoints)
+- [File Access](#file-access)
 
-Upload student profile images
+---
 
-Retrieve all students
+## Features
+- Create new student profiles with detailed information
+- Upload student profile images
+- Retrieve all students
+- Filter students by mode (Online / Offline)
+- Search students by Name, Email, Mobile Number, or ID
+- MongoDB Atlas integration for cloud database storage
+- Ready for deployment on Vercel
 
-Filter students by mode (Online / Offline)
+---
 
-Search students by Name, Email, Mobile Number, or ID
-
-MongoDB Atlas integration for cloud database storage
-
-Ready for deployment on Vercel
-
-Folder Structure
+## Folder Structure
+```text
 Server/
-│
 ├─ api/
 │  └─ index.js              # Entry point for Vercel serverless deployment
-│
 ├─ Routes/
 │  └─ StudentProfileRouter/
 │     └─ StudentProfileRouter.js
-│
 ├─ Controller/
 │  └─ StudentProfileController/
-│     └─ CreateInformationController.js
+│     ├─ CreateInformationController.js
 │     └─ FilteringInformationController.js
-│
 ├─ Model/
 │  └─ StudentProfileModel/
 │     └─ StudentProfileModel.js
-│
-├─ Uploads/                 # Folder to store uploaded images
-│
+├─ uploads/                 # Folder to store uploaded images
 ├─ .env                     # Environment variables
 ├─ .gitignore
 ├─ package.json
 └─ vercel.json
-
-Installation
-
-Clone the repository:
+```
 
 git clone <your-repo-url>
-cd Server
-
-
-Install dependencies:
-
 npm install
-
-
-Create a .env file in the root:
-
-PORT=5000
-MONGO_URI=<your-mongodb-atlas-uri>
-
-
-Run the server locally:
-
 nodemon api/index.js
 
+---
 
-Base URL:
+## Installation
 
+1. **Clone the repository:**
+  ```bash
+  git clone <your-repo-url>
+  cd Server
+  ```
+
+2. **Install dependencies:**
+  ```bash
+  npm install
+  ```
+
+3. **Create a `.env` file in the root:**
+  ```env
+  PORT=5000
+  MONGO_URI=<your-mongodb-atlas-uri>
+  ```
+
+4. **Run the server locally:**
+  ```bash
+  nodemon api/index.js
+  ```
+
+---
+
+## Base URL
+```
 http://localhost:5000/api/v1
+```
 
-API Endpoints
-1. Create Student Profile
 
-URL: /students
+---
 
-Method: POST
+## API Endpoints
 
-Content-Type: multipart/form-data
+### 1. Create Student Profile
+- **URL:** `/students`
+- **Method:** `POST`
+- **Content-Type:** `multipart/form-data`
+- **Description:** Creates a new student profile. Supports uploading a profile image (`profileImage`) and a resume (`resume`).
 
-Description: Creates a new student profile. Supports uploading a profile image (profileImage) and a resume (resume).
+#### Body Parameters (form-data)
+| Key                   | Type   | Required | Notes                                      |
+|-----------------------|--------|----------|--------------------------------------------|
+| studentName           | Text   | Yes      | Student's full name                        |
+| fathersName           | Text   | Yes      | Father's full name                         |
+| mothersName           | Text   | Yes      | Mother's full name                         |
+| dateOfBirth           | Date   | Yes      | Format: YYYY-MM-DD                         |
+| gender                | Text   | Yes      | Male / Female / Other                      |
+| email                 | Text   | Yes      | Valid email address                        |
+| mobileNumber          | Text   | Yes      | 11 digits                                  |
+| mode                  | Text   | Yes      | Online / Offline                           |
+| offlineCourseAccess   | Text   | Yes*     | Lab Access / Library Access (Offline only)  |
+| offlineCourseDuration | Text   | Yes*     | 3/6/12 months (Offline only)                |
+| offlineSession        | Text   | Yes*     | Morning / Evening / Night (Offline only)    |
+| admissionDate         | Date   | Yes      | Format: YYYY-MM-DD                         |
+| batchNumber           | Text   | Yes      | Batch identifier                            |
+| courseFee             | Number | Yes      | Must be ≥ 0                                 |
+| due                   | Number | No       | Defaults to 0                               |
+| paymentStatus         | Text   | No       | Paid / Pending, defaults to Pending         |
+| onlineCourseName      | Text   | Yes*     | Web/App/Graphic Design (Online only)        |
+| onlineCourseDuration  | Text   | Yes*     | 1/3/6 months (Online only)                  |
+| onlineSession         | Text   | Yes*     | Morning / Evening / Weekend (Online only)   |
+| profileImage          | File   | No       | Profile image file                          |
+| resume                | File   | No       | Resume file                                 |
 
-Body Parameters (form-data)
+\* Required only for the respective mode.
 
-Key	Type	Required	Notes
-studentName	Text	Yes	Student's full name
-fathersName	Text	Yes	Father's full name
-mothersName	Text	Yes	Mother's full name
-dateOfBirth	Date	Yes	Format: YYYY-MM-DD
-gender	Text	Yes	Male / Female / Other
-email	Text	Yes	Valid email address
-mobileNumber	Text	Yes	11 digits
-mode	Text	Yes	Online / Offline
-Offline mode only			
-offlineCourseAccess	Text	Yes	Lab Access / Library Access
-offlineCourseDuration	Text	Yes	3 months / 6 months / 12 months
-offlineSession	Text	Yes	Morning / Evening / Night
-admissionDate	Date	Yes	Format: YYYY-MM-DD
-batchNumber	Text	Yes	Batch identifier
-courseFee	Number	Yes	Must be ≥ 0
-due	Number	No	Defaults to 0
-paymentStatus	Text	No	Paid / Pending, defaults to Pending
-Online mode only			
-onlineCourseName	Text	Yes	Web Development / App Development / Graphic Design
-onlineCourseDuration	Text	Yes	1 month / 3 months / 6 months
-onlineSession	Text	Yes	Morning / Evening / Weekend
-profileImage	File	No	Profile image file
-resume	File	No	Resume file
-
-Example Response:
-
+#### Example Response
+```json
 {
   "success": true,
   "message": "Student profile created successfully",
@@ -139,17 +150,17 @@ Example Response:
     "updatedAt": "2025-08-29T04:07:02.160Z"
   }
 }
+```
 
-2. Get All Students
+---
 
-URL: /students
+### 2. Get All Students
+- **URL:** `/students`
+- **Method:** `GET`
+- **Description:** Fetch all student profiles.
 
-Method: GET
-
-Description: Fetch all student profiles.
-
-Example Response:
-
+#### Example Response
+```json
 {
   "success": true,
   "message": "All students fetched successfully",
@@ -159,24 +170,23 @@ Example Response:
       "_id": "68b1276683dd1516b3bca2a9",
       "studentName": "Nicole Tesla",
       "mode": "Offline",
-      "imageUrl": "uploads/12345-profile.jpg",
-      ...
+      "imageUrl": "uploads/12345-profile.jpg"
+      // ...
     }
   ]
 }
+```
 
-3. Get Students by Mode
+---
 
-URL: /students/mode?mode=Online
+### 3. Get Students by Mode
+- **URL:** `/students/mode?mode=Online`
+- **Method:** `GET`
+- **Query Parameter:** `mode` (Online / Offline)
+- **Description:** Fetch students filtered by their mode.
 
-Method: GET
-
-Query Parameter: mode (Online / Offline)
-
-Description: Fetch students filtered by their mode.
-
-Example Response:
-
+#### Example Response
+```json
 {
   "success": true,
   "message": "2 students found",
@@ -192,18 +202,17 @@ Example Response:
   ]
 }
 
-4. Search Students
 
-URL: /students/search?query=<text-or-id>
+---
 
-Method: GET
+### 4. Search Students
+- **URL:** `/students/search?query=<text-or-id>`
+- **Method:** `GET`
+- **Query Parameter:** `query` (Student Name, Email, Mobile Number, or MongoDB ID)
+- **Description:** Search students by name, email, phone number, or MongoDB `_id`.
 
-Query Parameter: query (Student Name, Email, Mobile Number, or MongoDB ID)
-
-Description: Search students by name, email, phone number, or MongoDB _id.
-
-Example Response:
-
+#### Example Response
+```json
 {
   "success": true,
   "message": "1 student(s) found",
@@ -214,19 +223,23 @@ Example Response:
       "email": "john.doe@example.com",
       "mobileNumber": "01712345678",
       "mode": "Offline",
-      "imageUrl": "uploads/1693328471234-profile.jpg",
-      ...
+      "imageUrl": "uploads/1693328471234-profile.jpg"
+      // ...
     }
   ]
 }
+```
 
-File Access
+---
+
+## File Access
 
 Uploaded files (profile images and resumes) can be accessed via:
-
+```
 http://localhost:5000/<imageUrl-or-resume-path>
+```
 
-
-Example:
-
+**Example:**
+```
 http://localhost:5000/uploads/1693328471234-profile.jpg
+```
