@@ -19,7 +19,8 @@ const upload = multer({ storage: storage });
 
 
 router.get("/", test);
-router.post("/students", upload.single("image"), createStudentProfile);
+// router.post("/students", upload.single("image"), createStudentProfile);
+router.post("/students", upload.single("profileImage"), createStudentProfile);
 router.get("/students", getAllStudents);
 // /students/mode ? mode = Online or / students / mode ? mode = Offline
 router.get("/students/mode", getStudentsByMode);
